@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<title>CampusCrate: Flashcards</title>
+<link href="style.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap">
+
+  <body>
+    <%- include('layouts/navbar'); -%>
+    
+    <h1 class = 'head'>Flashcards</h1>
+    
+    <div id="flashcard-container"></div>
+    
+    <div class = "flashcard-sidebar">
+    <button onclick="showCardGenerationSection()" class = "sidebar">Back to Selection</button>
+    <button onclick="generateCards()" id = "generateCards" class = "sidebar">Generate Cards</button>
+    <button id = "showCards" onclick = "practice()" class = "sidebar">Practice</button>
+    <button id = "showCards" onclick = "deleteCards()" class = "sidebar">Delete Cards</button>
+    </div>
+    <div id = "flashcard-showcase"></div>
+      
+    
+    <%- include('layouts/calculator'); -%>
+    <%- include('layouts/footer'); -%>
+    
+    <script>
+        /*The following functions (generateCards(), createFlashcard(), flipCard(), and showCardGenerationSection()),
+        as well as some of the CSS, are partially inspired from this Youtube video --> https://www.youtube.com/watch?v=mizkwuCqFsc */
+       //Generates a card to send to the backend once filled.
+        function generateCards() {
+
+            const numCards = 1;
+    
+            if (isNaN(numCards) || numCards < 1 ) {
+                alert('Please enter a valid number greater than 0.');
+                return;
+            }
+    
+            const flashcardContainer = document.getElementById('flashcard-showcase');
+            flashcardContainer.innerHTML = '';
+    
+            const maxCardsPerRow = 5;
+            const numRows = Math.ceil(numCards / maxCardsPerRow);
+    
+            for (let i = 1; i <= numRows; i++) {
+                const row = document.createElement('div');
+                row.classList.add('card-row');
+    
+                for (let j = 1; j <= maxCardsPerRow && (i - 1) * maxCardsPerRow + j <= numCards; j++) {
+                    const cardNumber = (i - 1) * maxCardsPerRow + j;
+                    const flashcard = createFlashcard(cardNumber);
+                    row.appendChild(flashcard);
+                }
+    
+                flashcardContainer.appendChild(row);
+            }
+        }
+        //Creates a flashcard and embeds it into the website.
+        function createFlashcard(cardNumber) {
+            const card = document.createElement('form');
+            card.action = '/flashCards'
+            card.method = 'post'
+            card.id = "card" + cardNumber
+            card.classList.add('flashcard');
+    
+            const front = document.createElement('div');
+            front.classList.add('front');
+            front.innerHTML = `
+            <textarea placeholder="Write your question here" id="questionInput${cardNumber}" name = "question" required></textarea>
+            <button onclick = "flipCard(${cardNumber})">Flip</button>
+        `;
+    
+            const back = document.createElement('div');
+            back.classList.add('back');
+            back.innerHTML = `
+            <textarea placeholder="Write your answer here" id="answerInput${cardNumber}" name = "answer" required></textarea>
+            <container class = "con">
+            <button onclick="flipCard(${cardNumber})">Flip</button>
+            <button type = "submit">Save</button>
+            </container>
+        `;
+    
+            card.appendChild(front);
+            card.appendChild(back);
+    
+            return card;
+        }
+        //Returns the user to the selection bar.
+        function showCardGenerationSection() {
+            const cardGenerationSection = document.getElementById('flashcard-showcase');
+            cardGenerationSection.style.display = 'block';
+    
+            const flashcardContainer = document.getElementById('flashcard-showcase');
+            flashcardContainer.innerHTML = '';
+        }
+        //Flips the card to fill in the other side (question/answer) After filling in both sides, the card is sent to the database.
+        function flipCard(cardNumber) {
+            const card = document.querySelectorAll('.flashcard')[cardNumber - 1];
+            if (card) {
+                const isFlipped = card.classList.contains('flipped');
+                card.style.transform = isFlipped ? 'rotateY(0deg)' : 'rotateY(180deg)';
+                card.classList.toggle('flipped');
+            } else {
+                console.error(`Card ${cardNumber} not found`);
+            }
+        }
+        //Makes every single flashcard that the user has previously saved from an array, to either delete or practice
+    function createFlashcards(cardNumber, arr) {
+            const card = document.createElement('form');
+            card.action = '/flashCards'
+            card.method = 'post'
+            card.id = "card" + cardNumber
+            card.classList.add('flashcard');
+            console.log(arr[cardNumber -1])
+            let q = arr[cardNumber -1].question;
+            let a = arr[cardNumber -1].answer;
+            console.log(q)
+            console.log(a)
+    
+            const front = document.createElement('div');
+            front.classList.add('front');
+            front.innerHTML = `
+            <input  class = "iBox" value ="${q}" id="questionShow${cardNumber}" name = "questionShow" readonly></input>
+            <container class = "con">
+            <button onclick="flipCard(${cardNumber})">Delete</button>
+            </container>
+        `;
+    
+            const back = document.createElement('div');
+            back.classList.add('back');
+            back.innerHTML = `
+            <input class = "iBox" value = "${a}" id="answerShow${cardNumber}" name = "answerShow" readonly></input>
+            <button type = "submit">Delete</button>
+        `;
+            card.appendChild(front);
+            card.appendChild(back);
+    
+            return card;
+        }
+    function spawnCards(num, arr) {
+            const numCards = num;
+    
+            if (isNaN(numCards) || numCards < 1 ) {
+                alert('you have no cards');
+                return;
+            }
+    
+            const flashcardContainer = document.getElementById('flashcard-showcase');
+            flashcardContainer.innerHTML = '';
+    
+            const maxCardsPerRow = 5;
+            const numRows = Math.ceil(numCards / maxCardsPerRow);
+    
+            for (let i = 1; i <= numRows; i++) {
+                const row = document.createElement('div');
+                row.classList.add('card-row');
+    
+                for (let j = 1; j <= maxCardsPerRow && (i - 1) * maxCardsPerRow + j <= numCards; j++) {
+                    const cardNumber = (i - 1) * maxCardsPerRow + j;
+                    const flashcard = createFlashcards(cardNumber, arr);
+                    row.appendChild(flashcard);
+                }
+    
+                flashcardContainer.appendChild(row);
+            }
+        }
+        //A function that fetches all cards saved by the user previously via an api.
+        function deleteCards(){
+            fetch('/api/cards')
+            .then(res => res.json())
+            .then(cards => {
+                console.log(cards)
+                spawnCards(cards.length, cards)
+            })
+        }
+        //Creates cards to practice.
+        function createF(cardNumber, arr) {
+            const card = document.createElement('div');
+            card.id = "card" + cardNumber
+            card.classList.add('flashcard');
+            console.log(arr[cardNumber -1])
+            let q = arr[cardNumber -1].question;
+            let a = arr[cardNumber -1].answer;
+            console.log(q)
+            console.log(a)
+    
+            const front = document.createElement('div');
+            front.classList.add('front');
+            front.innerHTML = `
+            <input class = "iBox" value ="${q}" id="questionShow${cardNumber}" name = "questionShow" readonly></input>
+            <button onclick="flipCard(${cardNumber})">Flip</button>
+        `;
+    
+            const back = document.createElement('div');
+            back.classList.add('back');
+            back.innerHTML = `
+            <input  class = "iBox" value = "${a}" id="answerShow${cardNumber}" name = "answerShow" readonly></input>
+            <button onclick="flipCard(${cardNumber})">Flip</button>
+        `;
+            card.appendChild(front);
+            card.appendChild(back);
+    
+            return card;
+        }
+    function spawnC(num, arr) {
+            const numCards = num;
+    
+            if (isNaN(numCards) || numCards < 1 ) {
+                alert('you have no cards');
+                return;
+            }
+    
+            const flashcardContainer = document.getElementById('flashcard-showcase');
+            flashcardContainer.innerHTML = '';
+    
+            const maxCardsPerRow = 5;
+            const numRows = Math.ceil(numCards / maxCardsPerRow);
+    
+            for (let i = 1; i <= numRows; i++) {
+                const row = document.createElement('div');
+                row.classList.add('card-row');
+    
+                for (let j = 1; j <= maxCardsPerRow && (i - 1) * maxCardsPerRow + j <= numCards; j++) {
+                    const cardNumber = (i - 1) * maxCardsPerRow + j;
+                    const flashcard = createF(cardNumber, arr);
+                    row.appendChild(flashcard);
+                }
+    
+                flashcardContainer.appendChild(row);
+            }
+        }
+        function practice(){
+            fetch('/api/cards')
+            .then(res => res.json())
+            .then(cards => {
+                console.log(cards)
+                spawnC(cards.length, cards)
+            })
+        }
+
+    </script>
+    
+    </body>
+
+</html>

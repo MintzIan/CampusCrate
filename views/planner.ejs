@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<title>CampusCrate: Planner</title>
+<link href="style.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap">
+
+  <body>
+    <%- include('layouts/navbar'); -%>
+    
+    <h1 class = "head">Planner</h1>
+    
+    <div id="notes-container"></div>
+    
+    <div class = "notes-sidebar">
+    <button onclick="showNoteGenerationSection()" class = "sidebar">Back to Selection</button>
+    <button onclick="generateNotes()" id = "generateNotes" class = "sidebar">Generate Note</button>
+    <button id = "showNotes" onclick = "deleteNotes()" class = "sidebar">Show Notes</button>
+    </div>
+    <div id = "note-showcase"></div>
+      <%- include('layouts/calculator'); -%>
+      <%- include('layouts/footer'); -%>
+    
+    <script>
+        //Similar to the flashcards, but this time, notes are generated, with a title and a textbox.
+        function generateNotes() {
+
+            const numNotes = 1;
+    
+            if (isNaN(numNotes) || numNotes < 1 ) {
+                alert('Please enter a valid number greater than 0.');
+                return;
+            }
+    
+            const noteContainer = document.getElementById('note-showcase');
+            noteContainer.innerHTML = '';
+    
+            const maxNotesPerRow = 5;
+            const numRows = Math.ceil(numNotes / maxNotesPerRow);
+    
+            for (let i = 1; i <= numRows; i++) {
+                const row = document.createElement('div');
+                row.classList.add('note-row');
+    
+                for (let j = 1; j <= maxNotesPerRow && (i - 1) * maxNotesPerRow + j <= numNotes; j++) {
+                    const noteNumber = (i - 1) * maxNotesPerRow + j;
+                    const note = createNote(noteNumber);
+                    row.appendChild(note);
+                }
+    
+                noteContainer.appendChild(row);
+            }
+        }
+    
+        function createNote(noteNumber) {
+            const note = document.createElement('form');
+            note.action = '/planner'
+            note.method = 'post'
+            note.id = "note" + noteNumber
+            note.classList.add('note');
+    
+            const frontN = document.createElement('div');
+            frontN.classList.add('frontN');
+            frontN.innerHTML = `
+            <input class = "IBox" placeholder = "Title..." id="title${noteNumber}" name = "title" required></input>
+            <br>
+            <input class = "iBox" placeholder="Plan..." id="questionInput${noteNumber}" name = "note" required></input>
+            <button type = "submit">Save</button>
+        `;
+    
+    
+            note.appendChild(frontN);
+    
+            return note;
+        }
+    
+        function showNoteGenerationSection() {
+            const noteGenerationSection = document.getElementById('note-showcase');
+            noteGenerationSection.style.display = 'block';
+    
+            const noteContainer = document.getElementById('note-showcase');
+            noteContainer.innerHTML = '';
+        }
+    function createNotes(noteNumber, arr) {
+            const note = document.createElement('form');
+            note.action = '/planner'
+            note.method = 'post'
+            note.id = "note" + noteNumber
+            note.classList.add('note');
+            console.log(arr[noteNumber -1])
+            let n = arr[noteNumber -1].note;
+            let t = arr[noteNumber -1].title;
+    
+            const frontN = document.createElement('div');
+            frontN.classList.add('frontN');
+            frontN.innerHTML = `
+            <input class = "IBox" value ="${t}" id="title${noteNumber}" name = "titleDel" readonly></input>
+            <br>
+            <input class = "iBox" value ="${n}" id="note${noteNumber}" name = "noteDel" readonly></input>
+            <container class = "con">
+            <button type = "submit">Delete</button>
+            </container>
+        `;
+    
+            note.appendChild(frontN);
+            return note;
+        }
+        //When notes previously saved by the user are shows, the option to delete them is also present.
+    function spawnNotes(num, arr) {
+            const numNotes = num;
+    
+            if (isNaN(numNotes) || numNotes < 1 ) {
+                alert('you have no notes');
+                return;
+            }
+    
+            const noteContainer = document.getElementById('note-showcase');
+            noteContainer.innerHTML = '';
+    
+            const maxNotesPerRow = 5;
+            const numRows = Math.ceil(numNotes / maxNotesPerRow);
+    
+            for (let i = 1; i <= numRows; i++) {
+                const row = document.createElement('div');
+                row.classList.add('note-row');
+    
+                for (let j = 1; j <= maxNotesPerRow && (i - 1) * maxNotesPerRow + j <= numNotes; j++) {
+                    const noteNumber = (i - 1) * maxNotesPerRow + j;
+                    const note = createNotes(noteNumber, arr);
+                    row.appendChild(note);
+                }
+    
+                noteContainer.appendChild(row);
+            }
+        }
+        //A function that fetches notes prevoisly saved by the user. 
+        function deleteNotes(){
+            fetch('/api/notes')
+            .then(res => res.json())
+            .then(notes => {
+                console.log(notes)
+                spawnNotes(notes.length, notes)
+            })
+        }
+
+
+    </script>
+    
+    </body>
+
+</html>

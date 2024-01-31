@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<title>CampusCrate: Home</title>
+<link href="style.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap">
+
+<body>
+  <%- include('layouts/navbar'); -%>
+
+      <div class = "intro">
+        <h1>Welcome to CampusCrate!</h1>
+        <h3>Your all in one work site to maximize YOUR work efficiency!</h3>
+        <select onchange = "location = this.value;"> <!--Sends you to the respective websites upon clicking the option-->
+          <option>Get Started!</option>
+          <option value = "/flashCards">Flash Cards</option>
+          <option value = "/planner">Planner</option>
+          <option value = "/login">Login</option>
+          <option value = "/logOut">Log Out</option>
+          <option value = "/signUp">Sign Up</option>
+        </select>
+      </div>
+      <%- include('layouts/calculator'); -%>
+      <%- include('layouts/footer'); -%>
+      </footer>
+  <script>
+  </script>
+  
+
+</body>
+
+</html>

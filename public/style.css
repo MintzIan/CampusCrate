@@ -1,0 +1,307 @@
+html{
+  height: 100%;
+  width: 100%;
+  background-position: center;
+  font-family: 'Nunito', sans-serif;
+}
+.background-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+body { 
+  margin: 0;
+  background: url("pink.png");
+  background-size: cover;
+}
+
+option{
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 10px;
+  padding: 20px;
+  width: 300px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  border: #fe6cab00;
+}
+
+button {
+  background-color: #ff9ecd;
+  padding: 10px;
+  margin-top: 10px;
+  text-align: center;
+  font-size: 20px;
+  text-decoration: none;
+  border: none;
+  border-radius: 12px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  padding: 8px 20px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur( 4.5px );
+  -webkit-backdrop-filter: blur( 4.5px );
+}
+button:hover{
+  background-color: #ffd6e7;
+}
+
+button:active {
+  background-color: #ffd6e7;
+  box-shadow: 0 5px #2e2d39;
+  transform: translateY(6px);
+}
+
+.loginBox {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 10px;
+  padding: 20px;
+  width: 300px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  border: #fe6cab00;
+}
+
+.intro{
+  margin: auto;
+  text-align: center;
+  font-family: 'Nunito', sans-serif;
+}
+.footer{
+  position: fixed;
+  bottom: 0;
+}
+.footer .space{
+  text-align: right;
+}
+.disable {
+  color: gray;
+}
+
+.option{
+  background-color: #ff9ecd;
+  padding: 10px;
+  text-align: center;
+  font-size: 20px;
+  text-decoration: none;
+  border: none;
+  border-radius: 12px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  padding: 8px 20px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur( 4.5px );
+  -webkit-backdrop-filter: blur( 4.5px );
+  font-family: 'Nunito', sans-serif;
+}
+.option:hover{
+  background-color: #ffb8d5;
+}
+
+.option:active {
+  background-color: #ffccdd;
+  box-shadow: 0 5px #2e2d39;
+  transform: translateY(6px);
+}
+
+.card-row {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+
+.flashcard {
+    width: 100%;
+    height: 150px;
+    transform-style: preserve-3d;
+    transition: transform 0.5s;
+    border: 1px solid #ccc;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+.front,
+.back,.frontN {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    backface-visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.back {
+    transform: rotateY(180deg);
+}
+
+textarea {
+    width: 80%;
+    height: 60%;
+    margin-bottom: 10px;
+    border-color: pink;
+    border-radius: 5px;
+}
+
+.title{
+  border-radius: 10px;
+  width: 100px;
+}
+.text{
+  border-radius: 10px;
+  width: 100px;
+}
+
+input{
+  background-size: 280px;
+  font-size: 20px;
+}
+
+select{
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(80px);
+  border-radius: 10px;
+  padding: 20px;
+  width: 200px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  border: #fe6cab00;
+  font-family: 'Nunito', sans-serif;
+  font-size: 16px;
+}
+
+#cardGenerationSection{
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(80px);
+  border-radius: 10px;
+  padding: 20px;
+  width: 200px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  border: #fe6cab00;
+  font-family: 'Nunito', sans-serif;
+  font-size: 16px;
+}
+#numCards{
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(80px);
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#flashcard-container{
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.con{
+  display: flex;
+}
+.form-container{
+  text-align:center;
+}
+#noteGenerationSection{
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(80px);
+  border-radius: 10px;
+  padding: 20px;
+  width: 200px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  border: #fe6cab00;
+  font-family: 'Nunito', sans-serif;
+  font-size: 16px;
+}
+#numNotes{
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(80px);
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#note-showcase{
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.note-row {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
+}
+
+.note {
+  width: 100%;
+  height: 150px;
+  transform-style: preserve-3d;
+  transition: transform 0.5s;
+  border: 1px solid #ccc;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+.iBox{
+  width: 80%;
+  height: 1000px;
+  border-color: pink;
+  border-radius: 5px;
+}
+.IBox{
+  width: 80%;
+  border-color: none;
+  border-radius: 5px;
+  border-color: pink;
+}
+.calcBox{
+  border-radius: 5px;
+  border-color: pink
+}
+.navcss{
+  text-decoration: none;
+  color: black;
+}
+.main-header{
+  display: flex;
+  justify-content: center;
+}
+.main-nav{
+  align-items: center;
+}
+.option{
+  margin: 10px;
+}
+.flashcard-sidebar{
+  margin: auto;
+  display: flex;
+  align-content: center;
+  width: 60%;
+  background-color: rgba(255, 255, 255, 0);
+  padding: 20px;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+.notes-sidebar{
+  margin: auto;
+  display: flex;
+  align-content: center;
+  width: 60%;
+  background-color: rgba(255, 255, 255, 0);
+  padding: 20px;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+.sidebar{
+  display: flex;
+  width: 100%;
+  padding: 10px;
+  text-align: center;
+}
+.head{
+  text-align: center;
+}

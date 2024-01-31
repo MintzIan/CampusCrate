@@ -1,0 +1,247 @@
+<!--The CSS here is intended to make sure the calculator is capable of being dragged around and can be toggled on and off.-->
+<style>
+    #draggable-container {
+      text-align: center;
+      position: absolute;
+      z-index: 9;
+    }
+    #calculator-container {
+      opacity: 0;
+      cursor: move;
+      z-index: 10;
+    }
+    #calculator-container.show {
+       opacity: 1;
+       padding: 10px;
+       cursor: move;
+        z-index: 10;
+        margin: auto;
+        border-style: solid;
+        border-color: pink;
+        border-width: 5px;
+        border-radius: 10px;
+      }
+
+
+    </style>
+  <button id = "open" type = "button">Show Calculator</button>
+  <div id="draggable-container">
+    <div class = "calculator-container" id = "calculator-container">
+      <div class = "calculator">
+        <input class = "calcBox" type="text" id="screen" maxlength="0" />
+          <br>
+          <!--All operations on the calculator-->
+        <button type="button" onclick="addNum(1)" id="bNum">1</button>
+        <button type="button" onclick="addNum(2)" id="bNum">2</button>
+        <button type="button" onclick="addNum(3)" id="bNum">3</button>
+        <br>
+        <button type="button" onclick="addNum(4)" id="bNum">4</button>
+        <button type="button" onclick="addNum(5)" id="bNum">5</button>
+        <button type="button" onclick="addNum(6)" id="bNum">6</button>
+        <br>
+        <button type="button" onclick="addNum(7)" id="bNum">7</button>
+        <button type="button" onclick="addNum(8)" id="bNum">8</button>
+        <button type="button" onclick="addNum(9)" id="bNum">9</button>
+        <br>
+        <button type="button" onclick="addNum(0)" id="bNum">0</button>
+        <button type="button" onclick="clearScreen()" id="clear">AC</button>
+        <br>
+        <button type="button" onclick="setSign('+')" id="bOperation">+</button>
+        <button type="button" onclick="setSign('-')" id="bOperation">-</button>
+        <button type="button" onclick="setSign('*')" id="bOperation">x</button>
+        <button type="button" onclick="setSign('/')" id="bOperation">&divide</button>
+        <br>
+        <button type="button" onclick="setSign('sqrt')" id="bOperation">&radic;</button>
+        <button type="button" onclick="setSign('xsqrt')" id="bOperation"><sup>y</sup>&radic;</button>
+        <button type="button" onclick="addNum('.')" id="bOperation">.</button>
+        <button type="button" onclick="setSign('^')" id="bNum">x<sup>2 </sup></button>
+        <br>
+        <button type="button" onclick="setSign('xy')" id="bNum">x<sup>y </sup></button>
+        <button type="button" onclick="negate('')" id="bNum"><sup>+</sup>/<sub>-</sub></button>
+        <button type="button" onclick="addNum(3.14159265359)" id="bOperation">&pi;</button>
+        <button type="button" onclick="equalPressed()" id="bEqual">=</button>
+        <br>
+        <button id = "close" type = "button">Hide Calculator</button>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    //listeners that allow the calculator to be toggled on and off.
+    let openBtn = document.getElementById("open");
+    let closeBtn = document.getElementById("close");
+    let calcContainer = document.getElementById("calculator-container");
+    let opened = false;
+  
+    openBtn.addEventListener("click", () => {
+      calcContainer.classList.add("show")
+      console.log("open")
+      opened = true;
+    });
+    closeBtn.addEventListener("click", () => {
+      calcContainer.classList.remove("show")
+      opened = false;
+    });
+    //Allows container to be dragged by changing the position upon the mouse being pushed down on the container.
+    const draggableContainer = document.getElementById('draggable-container');
+    const closeButton = document.getElementById('close-button');
+
+    draggableContainer.addEventListener('mousedown', (e) => {
+        e.preventDefault();
+
+        let offsetX = e.clientX - draggableContainer.getBoundingClientRect().left;
+        let offsetY = e.clientY - draggableContainer.getBoundingClientRect().top;
+
+        function moveElement(e) {
+            let x = e.clientX - offsetX;
+            let y = e.clientY - offsetY;
+
+            draggableContainer.style.left = x + 'px';
+            draggableContainer.style.top = y + 'px';
+        }
+
+        function stopMoving() {
+            window.removeEventListener('mousemove', moveElement);
+            window.removeEventListener('mouseup', stopMoving);
+        }
+
+        window.addEventListener('mousemove', moveElement);
+        window.addEventListener('mouseup', stopMoving);
+    });
+
+    closeButton.addEventListener('click', () => {
+        draggableContainer.style.display = 'none';
+    });
+
+
+     var num1 =0;
+     var num2 =0;
+     var signChoice = "";
+     //Adds number into the input box.
+     function addNum(num){
+       if(document.getElementById("screen").value == "Error" ){
+         num1= 0;
+         num2= 0;
+         document.getElementById("screen").value = "";
+       }
+       if (signChoice != "xsqrt"){
+      document.getElementById("screen").value = document.getElementById("screen").value + num;
+       }
+       if (signChoice == "xsqrt"){
+         document.getElementById("screen").value = num + document.getElementById("screen").value;
+       }
+       console.log(num)
+      }
+      //Adds sign into the input box.
+     function setSign(sign){
+      signChoice = sign;
+      switch(signChoice){
+        case "+":
+          num1 = document.getElementById("screen").value;
+          document.getElementById("screen").value = num1 + " " + signChoice + " ";
+          break;
+        case "-":
+          num1 = document.getElementById("screen").value;
+          document.getElementById("screen").value = num1 + " " + signChoice + " ";
+          break;
+        case "*":
+          num1 = document.getElementById("screen").value;
+          document.getElementById("screen").value = num1 + " " + signChoice + " ";
+          break;
+        case "/":
+          num1 = document.getElementById("screen").value;
+          document.getElementById("screen").value = num1 + " " + signChoice + " ";
+          break;
+        case "^":
+          num1 = document.getElementById("screen").value;
+          document.getElementById("screen").value = num1 + " " + signChoice + "2 ";
+          break;
+        case "sqrt":
+          num1 = document.getElementById("screen").value;
+          document.getElementById("screen").value = "√" + num1;
+          break;
+        case "xsqrt":
+          num1 = document.getElementById("screen").value;
+          document.getElementById("screen").value = "x√" + num1;
+          break;
+        case "xy":
+          num1 = document.getElementById("screen").value;
+          document.getElementById("screen").value = num1 + " ^ ";
+          break;
+        default:
+          break;
+      }
+      }
+      //Clears the input box.
+     function clearScreen() {
+      document.getElementById("screen").value = " ";
+     num1 = ' ';
+     num2 = ' ';
+     }
+     //Changes the number on the screen to negative.
+     function negate() {
+      document.getElementById("screen").value *= -1;
+     }
+     //when pressing the equal button, the screen is broken down into 2 numbers and a sign. 
+     //The product is dependant on the sign. 
+     function equalPressed() {
+       let n = document.getElementById("screen").value.lastIndexOf(signChoice)
+       let len = document.getElementById("screen").value.length;
+       num2 = document.getElementById("screen").value.substring((n+1), len)
+       if(signChoice == "xsqrt"){
+         n = document.getElementById("screen").value.indexOf(signChoice)
+          len = document.getElementById("screen").value.length;
+          num2 = document.getElementById("screen").value.substring((n), len)
+       }
+       num1 = parseFloat(num1)
+       num2 = parseFloat(num2)
+       console.log(num1 + ":" + num2)
+      if(signChoice == null){
+        signChoice = "*";
+      }
+      if (signChoice == "+") {
+      document.getElementById("screen").value = num1 + num2;
+        num2 = document.getElementById("screen").value;
+      }
+     else if (signChoice == "-") {
+       document.getElementById("screen").value = num1 - num2
+       num2 = document.getElementById("screen").value;
+     }
+     else if (signChoice == "*") {
+       document.getElementById("screen").value = num1 * num2
+       num2 = document.getElementById("screen").value;
+     }
+     else if (signChoice == "/") {
+       document.getElementById("screen").value = num1 / num2
+       num2 = document.getElementById("screen").value;
+     }
+     else if (signChoice == ".") {
+       document.getElementById("screen").value = num1 + (num2/100);
+       num2 = document.getElementById("screen").value;
+     }
+     else if (signChoice == "sqrt") { 
+       document.getElementById("screen").value = 
+       Math.sqrt(num1);
+       num2 = document.getElementById("screen").value;
+     }
+     else if (signChoice == "xsqrt") {
+       document.getElementById("screen").value = 
+       Math.pow(num1, 1/num2);
+       num2 = document.getElementById("screen").value;
+       signChoice = null;
+     }
+     else if (signChoice == "^") {
+       document.getElementById("screen").value = num1*num1
+       num2 = document.getElementById("screen").value;
+     }
+     else if (signChoice == "xy") {
+       document.getElementById("screen").value = 
+       Math.pow(num1, num2);
+       num2 = document.getElementById("screen").value;
+     }
+     //if the product is null, the screen will write error.
+      if(isNaN(num2)){
+        document.getElementById("screen").value = "Error";
+      }
+     }
+  </script>
